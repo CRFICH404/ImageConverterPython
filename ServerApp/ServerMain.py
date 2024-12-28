@@ -4,29 +4,31 @@
 #Do image conversions with NUMPY
 #???
 #Send results of conversion back to user app (or error messages I guess)
+import base64
 import os
-import random
-import string
-from distutils.command.config import config
-from operator import index
-
-import numpy as np
+import numpy
 import cherrypy
 
 class MyWebServer(object):
     @cherrypy.expose
     def index(self):
-        return open('public/html_files/HomePage.html')
+        return open('./public/html_files/HomePage.html')
 
 class ImageUploader(object):
     @cherrypy.expose
     def index(self):
-        return open('C:\\Users\\zazon\\PycharmProjects\\ImageConverter\\ServerApp\\public\\html_files\\ImageUploadPage.html')
-class ImageConvertForm(object):
-    def __init__(self):
-        self.file = ImageUploader().index
+        return open('./public/html_files/ImageUploadPage.html')
+    @cherrypy.expose
+    def generate_form(self, file):
+        tmp_file_url = "data:image/jpeg, image/jpg, image/png, base64," + base64.b64decode(file.read()).decode('ascii')
+        return open("./public/html_files/ImageConvertForm.html")
 
-
+class MyImage(object):
+    @cherrypy.expose
+    def index(self, file):
+        return f"""
+        <img src = "data:image/png;base64,{file}" />
+        """
 
 if __name__ == "__main__":
     root_dir = os.path.abspath(os.getcwd())
@@ -47,37 +49,8 @@ if __name__ == "__main__":
             'log.error_file': './logs/error',
         },
     }
-    image_upload_config = {
-        '/static': {
-            'tools.staticdir.on': True,
-            'tools.staticdir.dir': root_dir + '/public',
-        },
-        '/images': {
-            'tools.staticdir.on': True,
-            'tools.staticdir.dir': root_dir + '/images',
-        },
-        '/logs':{
-            'log.access_file': root_dir + '/logs/access',
-            'log.error_file': root_dir + '/logs/error',
-        },
-    }
-    image_convert_config = {
-        '/static': {
-            'tools.staticdir.on': True,
-            'tools.staticdir.dir': root_dir + '/public',
-        },
-        '/images': {
-            'tools.staticdir.on': True,
-            'tools.staticdir.dir': root_dir + '/images',
-        },
-        '/logs': {
-            'log.access_file': root_dir + '/logs/access',
-            'log.error_file': root_dir + '/logs/error',
-        },
-    }
     cherrypy.tree.mount(MyWebServer(), '/', config)
-    cherrypy.tree.mount(ImageUploader(), '/image_upload', image_upload_config)
-    cherrypy.tree.mount(ImageConvertForm(), '/image_convert_form', image_convert_config)
+    cherrypy.tree.mount(ImageUploader(), '/image_upload', config)
 
     cherrypy.engine.start()
     cherrypy.engine.block()
