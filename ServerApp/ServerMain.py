@@ -18,17 +18,19 @@ class ImageUploader(object):
     @cherrypy.expose
     def index(self):
         return open('./public/html_files/ImageUploadPage.html')
+
     @cherrypy.expose
     def generate_form(self, file):
-        tmp_file_url = "data:image/jpeg, image/jpg, image/png, base64," + base64.b64decode(file.read()).decode('ascii')
+        file_path ="images_upload/" + file.filename
+        size = 0
+        with open(file_path, 'wb') as out:
+            while True:
+                data = file.file.read(8192)
+                if not data:
+                    break
+                out.write(data)
+                size += len(data)
         return open("./public/html_files/ImageConvertForm.html")
-
-class MyImage(object):
-    @cherrypy.expose
-    def index(self, file):
-        return f"""
-        <img src = "data:image/png;base64,{file}" />
-        """
 
 if __name__ == "__main__":
     root_dir = os.path.abspath(os.getcwd())
@@ -44,6 +46,10 @@ if __name__ == "__main__":
             'tools.staticdir.on': True,
             'tools.staticdir.dir': './images',
         },
+        '/images_upload': {
+            'tools.staticdir.on': True,
+            'tools.staticdir.dir': './images_upload',
+        },
         '/logs':{
             'log.access_file': './logs/access',
             'log.error_file': './logs/error',
@@ -54,3 +60,5 @@ if __name__ == "__main__":
 
     cherrypy.engine.start()
     cherrypy.engine.block()
+
+    print(root_dir)
