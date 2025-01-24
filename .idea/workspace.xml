@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cbf61ddc-02b8-4844-b01b-e16e9fff7997" name="Changes" comment="Tried to display uploaded file from original on the form page (failed miserably)">
-      <change afterPath="$PROJECT_DIR$/ServerApp/public/html_files/ShowImage.html" afterDir="false" />
+    <list default="true" id="cbf61ddc-02b8-4844-b01b-e16e9fff7997" name="Changes" comment="made image_upload a static folder. Images can now be showed(After some html shenanigans)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ServerApp/ServerMain.py" beforeDir="false" afterPath="$PROJECT_DIR$/ServerApp/ServerMain.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ServerApp/public/html_files/ImageConvertForm.html" beforeDir="false" afterPath="$PROJECT_DIR$/ServerApp/public/html_files/ImageConvertForm.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ServerApp/public/html_files/ImageUploadPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/ServerApp/public/html_files/ImageUploadPage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopApp/UserApplicationMain.py" beforeDir="false" afterPath="$PROJECT_DIR$/CoreImageConverter/ImageModification.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,38 +46,63 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;Python.ServerMain.executor&quot;: &quot;Run&quot;,
-    &quot;Python.UserApplicationMain.executor&quot;: &quot;Run&quot;,
-    &quot;Python.count.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/zazon/PycharmProjects/ImageConverter/ServerApp/image_upload/public&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "Python.ImageModification.executor": "Run",
+    "Python.ServerMain.executor": "Run",
+    "Python.UserApplicationMain.executor": "Run",
+    "Python.count.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/zazon/PycharmProjects/ImageConverter/ServerApp/images_upload",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\zazon\PycharmProjects\ImageConverter\ServerApp\images_upload" />
       <recent name="C:\Users\zazon\PycharmProjects\ImageConverter\ServerApp\image_upload\public" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\zazon\PycharmProjects\ImageConverter\ServerApp\images_upload" />
       <recent name="C:\Users\zazon\PycharmProjects\ImageConverter\ServerApp\public\html_files" />
       <recent name="C:\Users\zazon\PycharmProjects\ImageConverter\ServerApp" />
       <recent name="C:\Users\zazon\PycharmProjects\ImageConverter\ServerApp\image_upload" />
       <recent name="C:\Users\zazon\PycharmProjects\ImageConverter\ServerApp\public" />
-      <recent name="C:\Users\zazon\PycharmProjects\ImageConverter\ServerApp\image_upload\public\html_files" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.ServerMain">
+  <component name="RunManager" selected="Python.ImageModification">
+    <configuration name="ImageModification" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ImageConverter" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/CoreImageConverter" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/CoreImageConverter/ImageModification.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="ServerMain" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ImageConverter" />
       <option name="ENV_FILES" value="" />
@@ -152,6 +174,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.ImageModification" />
         <item itemvalue="Python.ServerMain" />
         <item itemvalue="Python.count" />
         <item itemvalue="Python.UserApplicationMain" />
@@ -185,6 +208,8 @@
       <workItem from="1736012687663" duration="438000" />
       <workItem from="1736017767122" duration="2363000" />
       <workItem from="1736091179270" duration="4787000" />
+      <workItem from="1736454328131" duration="225000" />
+      <workItem from="1737715596106" duration="22626000" />
     </task>
     <task id="LOCAL-00001" summary="Tried some CherryPy">
       <option name="closed" value="true" />
@@ -202,7 +227,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735426528988</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="made image_upload a static folder. Images can now be showed(After some html shenanigans)">
+      <option name="closed" value="true" />
+      <created>1736454531377</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1736454531377</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -222,11 +255,13 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Tried some CherryPy" />
     <MESSAGE value="Tried to display uploaded file from original on the form page (failed miserably)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Tried to display uploaded file from original on the form page (failed miserably)" />
+    <MESSAGE value="made image_upload a static folder. Images can now be showed(After some html shenanigans)" />
+    <option name="LAST_COMMIT_MESSAGE" value="made image_upload a static folder. Images can now be showed(After some html shenanigans)" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/ImageConverter$ImageModification.coverage" NAME="ImageModification Coverage Results" MODIFIED="1737739718823" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CoreImageConverter" />
     <SUITE FILE_PATH="coverage/ImageConverter$count.coverage" NAME="count Coverage Results" MODIFIED="1734803540143" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/DesktopApp" />
-    <SUITE FILE_PATH="coverage/ImageConverter$ServerMain.coverage" NAME="ServerMain Coverage Results" MODIFIED="1736095396156" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ServerApp" />
+    <SUITE FILE_PATH="coverage/ImageConverter$ServerMain.coverage" NAME="ServerMain Coverage Results" MODIFIED="1737720685303" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ServerApp" />
     <SUITE FILE_PATH="coverage/ImageConverter$UserApplicationMain.coverage" NAME="UserApplicationMain Coverage Results" MODIFIED="1730904757338" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/DectopApp" />
   </component>
 </project>
