@@ -1,8 +1,10 @@
-
+import os.path
 from functools import singledispatch
 from PIL import Image
 import numpy as np
 import math
+import time
+import threading
 
 
 def change_image(image_name: str, command: str, change_values=None):
@@ -34,14 +36,22 @@ def change_image(image_name: str, command: str, change_values=None):
                 change_contrast(open_image(image_name), 1)
             else:
                 change_contrast(open_image(image_name), change_values[0])
+        case "resize_image":
+            if len(change_values) > 2:
+                resize_image(open_image(image_name), change_values[0], change_values[1])
         case _:
             print("No such command")
     ...
 
 def open_image (image_name: str) -> np.ndarray:
 
-    path_base = 'C:\\Users\\zazon\\PycharmProjects\\ImageConverter\\ServerApp\\images_upload\\'
-    path_to_image = path_base + image_name
+    path_parts = os.path.abspath(os.getcwd()).split('\\')
+    path_to_image = ''
+
+    for part in range(len(path_parts) - 1):
+        path_to_image += path_parts[part] + '\\'
+
+    path_to_image += "ServerApp\\images_upload\\" + image_name
 
     if is_grayscale(path_to_image):
         image = np.array(Image.open(path_to_image))
@@ -151,41 +161,66 @@ def resize_image (image: np.ndarray, new_height: int | float, new_width: int | f
 
     image_scale_factor_y = image.shape[0] / new_height
     image_scale_factor_x = image.shape[1] / new_width
+    image_scale_factor = (image_scale_factor_y, image_scale_factor_x)
+
+    time_start = time.time()
 
     for new_y in range(new_height):
-        for new_x in range(new_width):
-            if grayscale:
-                old_pixel = [new_y * image_scale_factor_y, new_x * image_scale_factor_x]
-                pixel_fraction = [old_pixel[0] - math.floor(old_pixel[0]), old_pixel[1] - math.floor(old_pixel[1])]
+        if grayscale:
+            tr = threading.Thread(target=set_nearby_pixels_greyscale,
+                                  args=(image, new_image, new_width, image_scale_factor, new_y))
+            tr.start()
+            tr.join()
+        else:
+            tr = threading.Thread(target=set_nearby_pixels_color,
+                                  args=(image, new_image, new_width, image_scale_factor, new_y))
+            tr.start()
+            tr.join()
 
-                left_upper_pixel = image[math.floor(old_pixel[0]), math.floor(old_pixel[1])]
-                right_upper_pixel = image[math.floor(old_pixel[0]), min(image.shape[1] - 1 ,math.ceil(old_pixel[1]))]
-                left_lower_pixel = image[min(image.shape[0] - 1 ,math.ceil(old_pixel[0])), math.floor(old_pixel[1])]
-                right_lower_pixel = image[min(image.shape[0] - 1 ,math.ceil(old_pixel[0])), min(image.shape[1] - 1 ,math.ceil(old_pixel[1]))]
-
-                mix_top_pixels = left_upper_pixel * pixel_fraction[1] + right_upper_pixel * (1 - pixel_fraction[1])
-                mix_bot_pixels = left_lower_pixel * pixel_fraction[1] + right_lower_pixel * (1 - pixel_fraction[1])
-                mix_top_and_bot = mix_top_pixels * pixel_fraction[0] + mix_bot_pixels * (1 - pixel_fraction[0])
-
-                new_image[new_y, new_x] = mix_top_and_bot
-
-            else:
-                for channel in range(image.shape[2]):
-                    old_pixel = [new_y * image_scale_factor_y, new_x * image_scale_factor_x]
-                    pixel_fraction = [old_pixel[0] - math.floor(old_pixel[0]), old_pixel[1] - math.floor(old_pixel[1])]
-
-                    left_upper_pixel = image[math.floor(old_pixel[0]), math.floor(old_pixel[1]), channel]
-                    right_upper_pixel = image[math.floor(old_pixel[0]), min(image.shape[1] - 1, math.ceil(old_pixel[1])), channel]
-                    left_lower_pixel = image[min(image.shape[0] - 1, math.ceil(old_pixel[0])), math.floor(old_pixel[1]), channel]
-                    right_lower_pixel = image[min(image.shape[0] - 1, math.ceil(old_pixel[0])), min(image.shape[1] - 1,math.ceil(old_pixel[1])), channel]
-
-                    mix_top_pixels = left_upper_pixel * pixel_fraction[1] + right_upper_pixel * (1 - pixel_fraction[1])
-                    mix_bot_pixels = left_lower_pixel * pixel_fraction[1] + right_lower_pixel * (1 - pixel_fraction[1])
-                    mix_top_and_bot = mix_top_pixels * pixel_fraction[0] + mix_bot_pixels * (1 - pixel_fraction[0])
-
-                    new_image[new_y, new_x, channel] = mix_top_and_bot
+    time_end = time.time()
+    print("Time elapsed: ", time_end - time_start)
 
     return new_image
+
+def set_nearby_pixels_color(source_image: np.ndarray, result_image: np.ndarray, new_width: int,
+                                image_scale_factor: (int, int), curr_y: int):
+    for new_x in range(new_width):
+        old_pixel = [curr_y * image_scale_factor[0], new_x * image_scale_factor[1]]
+        pixel_fraction = [old_pixel[0] - math.floor(old_pixel[0]), old_pixel[1] - math.floor(old_pixel[1])]
+
+        left_upper_pixel = source_image[math.floor(old_pixel[0]), math.floor(old_pixel[1])]
+        right_upper_pixel = source_image[
+                math.floor(old_pixel[0]), min(source_image.shape[1] - 1, math.ceil(old_pixel[1]))]
+        left_lower_pixel = source_image[
+                min(source_image.shape[0] - 1, math.ceil(old_pixel[0])), math.floor(old_pixel[1])]
+        right_lower_pixel = source_image[
+                min(source_image.shape[0] - 1, math.ceil(old_pixel[0])), min(source_image.shape[1] - 1,
+                                                                             math.ceil(old_pixel[1]))]
+        mix_top_pixels = left_upper_pixel * pixel_fraction[1] + right_upper_pixel * (1 - pixel_fraction[1])
+        mix_bot_pixels = left_lower_pixel * pixel_fraction[1] + right_lower_pixel * (1 - pixel_fraction[1])
+        mix_top_and_bot = mix_top_pixels * pixel_fraction[0] + mix_bot_pixels * (1 - pixel_fraction[0])
+
+        result_image[curr_y, new_x] = mix_top_and_bot
+
+def set_nearby_pixels_greyscale(source_image: np.ndarray, result_image: np.ndarray, new_width: int,
+                                    image_scale_factor: (int, int), curr_y: int):
+    for new_x in range(new_width):
+        for channel in range(source_image.shape[2]):
+            old_pixel = [curr_y * image_scale_factor[0], new_x * image_scale_factor[1]]
+            pixel_fraction = [old_pixel[0] - math.floor(old_pixel[0]), old_pixel[1] - math.floor(old_pixel[1])]
+
+            left_upper_pixel = source_image[math.floor(old_pixel[0]), math.floor(old_pixel[1]), channel]
+            right_upper_pixel = source_image[
+                    math.floor(old_pixel[0]), min(source_image.shape[1] - 1, math.ceil(old_pixel[1])), channel]
+            left_lower_pixel = source_image[min(source_image.shape[0] - 1, math.ceil(old_pixel[0])), math.floor(old_pixel[1]), channel]
+            right_lower_pixel = source_image[min(source_image.shape[0] - 1, math.ceil(old_pixel[0])), min(source_image.shape[1] - 1,
+                                                                                 math.ceil(old_pixel[1])), channel]
+
+            mix_top_pixels = left_upper_pixel * pixel_fraction[1] + right_upper_pixel * (1 - pixel_fraction[1])
+            mix_bot_pixels = left_lower_pixel * pixel_fraction[1] + right_lower_pixel * (1 - pixel_fraction[1])
+            mix_top_and_bot = mix_top_pixels * pixel_fraction[0] + mix_bot_pixels * (1 - pixel_fraction[0])
+
+            result_image[curr_y, new_x, channel] = mix_top_and_bot
 
 if __name__ == "__main__":
     img_name = 'honkibooty-Rebecca-(Edgerunners)-Cyberpunk-Edgerunners-8756249.jpg'
@@ -193,7 +228,7 @@ if __name__ == "__main__":
     path3 = 'GO48R.png'
     image_np = open_image(img_name)
     image_np_2 = open_image(img_name_2)
-    #Image.fromarray(resize_image(image_np, 1520, 1520)).show()
+    Image.fromarray(resize_image(image_np, 1300, 600)).show()
     #Image.fromarray(change_contrast(image_np_2)).show()
     #image_np_3 = open_image(path3)
     #Image.fromarray(image_np).show()
