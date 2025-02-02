@@ -6,25 +6,74 @@
     <title>Image Convert Form</title>
 </head>
 <body>
+    <img src="{{image_path}}" alt="image" style="max-width: 800px;">
+    <p>Image size: {{width}}x{{height}}</p>
+    <form method="post" action="convert_image">
+        <input type = "hidden" id="image_name" name="image_name" value="{{image_name}}">
+        <label for="command"></label>
+        <select id="command" name="command" required>
+            <option value="crop_image">Crop Image</option>
+            <option value="rotate_image_right_90_deg">Rotate 90° Right</option>
+            <option value="flip_image">Flip Image</option>
+            <option value="solarize_image">Solarize Image</option>
+            <option value="convert_to_negative">Convert to Negative</option>
+            <option value="change_brightness">Change Brightness</option>
+            <option value="change_contrast">Change Contrast</option>
+            <option value="resize_image">Resize Image</option>
+            <option value="convert_rgb_to_greyscale">Convert to Grayscale</option>
+        </select><br><br>
+    <div id="dynamicInputs"></div>
+        <script>
+        const commandSelect = document.getElementById('command');
+        const dynamicInputs = document.getElementById('dynamicInputs');
 
-    <img src=file_path alt="original file">
-    <p>What do you want to do with your image?</p>
-    <p>Choose one at a time</p>
-    <form method = "get" action = "image_result">
-        <input type="checkbox" id="to_negative" name="toNegative"/>
-        <label for="to_negative">   Make negative</label><br>
-        <input type="checkbox" id="do_solarization" name="doSolarization"/>
-        <label for="do_solarization">   Solarization</label><br>
-        <input type="checkbox" id="change_brightness" name="change_brightness"/>
-        <label for="brightness">    Change brightness:</label><br>
-        <label for="change_brightness"></label>
-        <input type="range" id="brightness" name="brightness" min="0" max="255"/><br>
-        <input type="checkbox" id="change_size">
-        <label for="change_size">   Change size:</label><br>
-        <label for="size_to_change_to"></label>
-        <input type="text" id="size_to_change_to" name="new_size"/><br>
-        <input type="submit">
-    </form><br>
+        commandSelect.addEventListener('change', () => {
+            dynamicInputs.innerHTML = ''; // Clear previous inputs
+
+            const command = commandSelect.value;
+            switch (command) {
+                case 'crop_image':
+                    addInput('point_a_x', 'Point A X-coordinate', 'number');
+                    addInput('point_a_y', 'Point A Y-coordinate', 'number');
+                    addInput('point_b_x', 'Point B X-coordinate', 'number');
+                    addInput('point_b_y', 'Point B Y-coordinate', 'number');
+                    break;
+                case 'resize_image':
+                    addInput('height', 'New Height', 'number');
+                    addInput('width', 'New Width', 'number');
+                    break;
+                case 'change_brightness':
+                    addInput('brightness_value', 'Brightness Value (Integer)', 'number');
+                    break;
+                case 'change_contrast':
+                    addInput('contrast_value', 'Contrast Value (0-49.9)', 'number');
+                    break;
+                case 'solarize_image':
+                    addInput('thresh_val', 'Threshold Value (Optional)', 'number');
+                    addInput('effect', 'Effect Value (Optional)', 'number');
+                    break;
+                default:
+                    dynamicInputs.innerHTML = '<p>No additional inputs required for this command.</p>';
+            }
+        });
+
+        function addInput(id, label) {
+            const labelElement = document.createElement('label');
+            labelElement.htmlFor = id;
+            labelElement.textContent = label + ':';
+
+            const inputElement = document.createElement('input');
+            inputElement.type = 'number';
+            inputElement.id = id;
+            inputElement.name = id;
+
+            dynamicInputs.appendChild(labelElement);
+            dynamicInputs.appendChild(inputElement);
+            dynamicInputs.appendChild(document.createElement('br'));
+        }
+    </script>
+    <input type="submit" value="Submit">
+    </form>
     <ul>
         <li><a href = "/image_upload">Upload another image.</a></li>
     </ul>

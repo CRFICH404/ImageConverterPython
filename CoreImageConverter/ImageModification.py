@@ -7,41 +7,46 @@ import time
 import threading
 
 
-def change_image(image_name: str, command: str, change_values=None):
-    if change_values is None:
+def change_image(image_name: str, command: str, **kwargs):
+    if kwargs is None:
         change_values = []
+
     match command:
         case "crop_image":
-            crop_image(open_image(image_name), change_values[0], change_values[1])
+            return crop_image(open_image(image_name), [kwargs[''], kwargs['']], [kwargs[''], kwargs['']])
         case "rotate_image_right_90_deg":
-            rotate_image_right_90_deg(open_image(image_name))
+            return rotate_image_right_90_deg(open_image(image_name))
         case "flip_image":
-            flip_image(open_image(image_name))
+            return flip_image(open_image(image_name))
         case "solarize_image":
-            if len(change_values) < 1:
-                solarize_image(open_image(image_name))
-            elif len(change_values) == 1:
-                solarize_image(open_image(image_name), change_values[0])
+            if len(**kwargs) < 1:
+                return solarize_image(open_image(image_name))
+            elif len(kwargs) == 1:
+                return solarize_image(open_image(image_name), kwargs[''])
             else:
-                solarize_image(open_image(image_name), change_values[0], change_values[1])
+                return solarize_image(open_image(image_name), kwargs[''], kwargs[''])
         case "convert_to_negative":
-            convert_to_negative(open_image(image_name))
+            return convert_to_negative(open_image(image_name))
         case "change_brightness":
-            if len(change_values) < 1:
-                change_brightness(open_image(image_name), 0)
+            if kwargs is None:
+                return change_brightness(open_image(image_name), 0)
             else:
-                change_brightness(open_image(image_name), change_values[0])
+                return change_brightness(open_image(image_name), kwargs[''])
         case "change_contrast":
-            if len(change_values) < 1:
-                change_contrast(open_image(image_name), 1)
+            if len(**kwargs) < 1:
+                return change_contrast(open_image(image_name), 1)
             else:
-                change_contrast(open_image(image_name), change_values[0])
+                return change_contrast(open_image(image_name), kwargs[''])
         case "resize_image":
-            if len(change_values) > 2:
-                resize_image(open_image(image_name), change_values[0], change_values[1])
+            if kwargs['height'] and kwargs['width']:
+                return resize_image(open_image(image_name), kwargs['height'], kwargs['width'])
+            else:
+                return open_image(image_name)
+        case "convert_rgb_to_greyscale":
+            return convert_rgb_to_greyscale(open_image(image_name))
         case _:
             print("No such command")
-    ...
+    return None
 
 def open_image (image_name: str) -> np.ndarray:
 
@@ -53,17 +58,16 @@ def open_image (image_name: str) -> np.ndarray:
 
     path_to_image += "ServerApp\\images_upload\\" + image_name
 
-    if is_grayscale(path_to_image):
+    if is_greyscale(path_to_image):
         image = np.array(Image.open(path_to_image))
-        print(image.shape)
-        return np.dot(image[..., :3], [0.2989, 0.5870, 0.1140])
+        return convert_rgb_to_greyscale(image)
     return np.array(Image.open(path_to_image))
 
 @singledispatch
-def is_grayscale (imag):
+def is_greyscale (imag):
     raise NotImplementedError("Not implemented")
 
-@is_grayscale.register(np.ndarray)
+@is_greyscale.register(np.ndarray)
 def _(imag)->bool:
     if len(imag.shape) <= 2:
         print("Grayscale image")
@@ -71,7 +75,7 @@ def _(imag)->bool:
     print("Color image")
     return False
 
-@is_grayscale.register(str)
+@is_greyscale.register(str)
 def _(imag)->bool:
     image = np.array(Image.open(imag))
     image_total_pixel_diff = 0
@@ -91,6 +95,9 @@ def _(imag)->bool:
         return False
     print("Grayscale image")
     return True
+
+def convert_rgb_to_greyscale(image: np.ndarray) -> np.ndarray:
+    return np.dot(image[..., :3], [0.2989, 0.5870, 0.1140])
 
 def crop_image (image: np.ndarray, point_a: [int, int], point_b: [int, int]) -> np.ndarray:
     if (point_b[0] < 0 and point_b[1] < 0) or (point_a[0] > image.shape[0] and point_a[1] > image.shape[1]):
@@ -115,13 +122,10 @@ def flip_image (image: np.ndarray) -> np.ndarray:
     return np.fliplr(image)
 
 def convert_to_negative (image: np.ndarray) -> np.ndarray:
-    image_negative = 255 - image
-    img = Image.fromarray(image_negative)
-    img.show()
-    return image_negative
+    return 255 - image
 
 def solarize_image (image: np.ndarray, thresh_val: int = 130, effect : int = 255) -> np.ndarray:
-    if not is_grayscale(image):
+    if not is_greyscale(image):
         red_image, green_image, blue_image = image[:, :, 0], image[:, :, 1], image[:, :, 2]
         red_solarization = np.where(red_image < thresh_val, red_image, effect - red_image)
         green_solarization = np.where(green_image < thresh_val, green_image, effect - green_image)
@@ -132,7 +136,7 @@ def solarize_image (image: np.ndarray, thresh_val: int = 130, effect : int = 255
 
     return image_solarization
 
-def change_brightness (image: np.ndarray, value: int) -> np.ndarray:
+def change_brightness (image: np.ndarray, value: int = 0) -> np.ndarray:
     image_br = image.astype(np.float64)
     image_br += value
     image_br = np.clip(image_br, 0, 255)
@@ -150,7 +154,7 @@ def change_contrast (image: np.ndarray, value: float = 0) -> np.ndarray:
     return image_changed.astype(np.uint8)
 
 def resize_image (image: np.ndarray, new_height: int | float, new_width: int | float) -> np.ndarray:
-    grayscale = is_grayscale(image)
+    grayscale = is_greyscale(image)
     new_width = int(new_width)
     new_height = int(new_height)
     if not grayscale:
@@ -221,6 +225,9 @@ def set_nearby_pixels_greyscale(source_image: np.ndarray, result_image: np.ndarr
             mix_top_and_bot = mix_top_pixels * pixel_fraction[0] + mix_bot_pixels * (1 - pixel_fraction[0])
 
             result_image[curr_y, new_x, channel] = mix_top_and_bot
+
+def edge_highlight (image: np.ndarray, highlight_thickness: int, highlight_color: (int, int, int)) -> np.ndarray:
+    ...
 
 if __name__ == "__main__":
     img_name = 'honkibooty-Rebecca-(Edgerunners)-Cyberpunk-Edgerunners-8756249.jpg'
