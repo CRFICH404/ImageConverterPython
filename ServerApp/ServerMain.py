@@ -1,9 +1,3 @@
-#Server side of image converter application
-#Wait for request
-#Parse user request
-#Do image conversions with NUMPY
-#???
-#Send results of conversion back to user app (or error messages I guess)
 import os
 import cherrypy
 import numpy as np
