@@ -7,9 +7,24 @@
 <body>
     <p>Conversion result</p>
     <div><img id="my_image" src="{{result_image_path}}" alt="result image" style="max-width: 800px;"></div>
-    <form>
-        <input type="hidden" id="result_image_path" name="result_image_path" value="{{result_image_path}}">
-        <input type="submit" value="Save">
+    <form method="post" action="generate_form">
+        <input type="hidden" id="orig_image_name" name="file_name" value="{{prev_image_name}}">
+        <input type="submit" value="Back">
+    </form>
+    <button onclick="downloadImage()">Download Image</button>
+    <script>
+        function downloadImage() {
+            let img = document.getElementById("my_image");
+            let link = document.createElement("a");
+            link.download = "image.jpg";
+            link.href = img.src;
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+    <form method="post" action="generate_form">
+        <input type="hidden" id="result_image_name" name="file_name" value="{{result_image_name}}">
+        <input type="submit" value="Continue">
     </form>
 
 

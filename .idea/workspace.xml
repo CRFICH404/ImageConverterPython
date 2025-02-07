@@ -4,14 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cbf61ddc-02b8-4844-b01b-e16e9fff7997" name="Changes" comment="Added multithreading to image_resize">
+    <list default="true" id="cbf61ddc-02b8-4844-b01b-e16e9fff7997" name="Changes" comment="zzz">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CoreImageConverter/ImageModification.py" beforeDir="false" afterPath="$PROJECT_DIR$/CoreImageConverter/ImageModification.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ServerApp/ServerMain.py" beforeDir="false" afterPath="$PROJECT_DIR$/ServerApp/ServerMain.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ServerApp/public/html_files/HomePage.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ServerApp/public/html_files/ImageConvertForm.html" beforeDir="false" afterPath="$PROJECT_DIR$/ServerApp/public/html_files/ImageConvertForm.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ServerApp/public/html_files/ImageUploadPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/ServerApp/public/html_files/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ServerApp/public/html_files/ShowImage.html" beforeDir="false" afterPath="$PROJECT_DIR$/ServerApp/public/html_files/ShowResult.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ServerApp/public/html_files/ShowResult.html" beforeDir="false" afterPath="$PROJECT_DIR$/ServerApp/public/html_files/ShowResult.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ServerApp/public/html_files/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/ServerApp/public/html_files/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -221,7 +220,8 @@
       <workItem from="1738505925084" duration="3204000" />
       <workItem from="1738513900454" duration="4682000" />
       <workItem from="1738523620158" duration="567000" />
-      <workItem from="1738530057331" duration="3169000" />
+      <workItem from="1738530057331" duration="3365000" />
+      <workItem from="1738929069694" duration="17523000" />
     </task>
     <task id="LOCAL-00001" summary="Tried some CherryPy">
       <option name="closed" value="true" />
@@ -263,7 +263,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737825913917</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="zzz">
+      <option name="closed" value="true" />
+      <created>1738533337777</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1738533337777</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -286,12 +294,13 @@
     <MESSAGE value="made image_upload a static folder. Images can now be showed(After some html shenanigans)" />
     <MESSAGE value="Made some image change functions" />
     <MESSAGE value="Added multithreading to image_resize" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added multithreading to image_resize" />
+    <MESSAGE value="zzz" />
+    <option name="LAST_COMMIT_MESSAGE" value="zzz" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ImageConverter$ImageModification.coverage" NAME="ImageModification Coverage Results" MODIFIED="1738498817457" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CoreImageConverter" />
     <SUITE FILE_PATH="coverage/ImageConverter$count.coverage" NAME="count Coverage Results" MODIFIED="1734803540143" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/DesktopApp" />
-    <SUITE FILE_PATH="coverage/ImageConverter$ServerMain.coverage" NAME="ServerMain Coverage Results" MODIFIED="1738533170431" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ServerApp" />
+    <SUITE FILE_PATH="coverage/ImageConverter$ServerMain.coverage" NAME="ServerMain Coverage Results" MODIFIED="1738946717372" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ServerApp" />
     <SUITE FILE_PATH="coverage/ImageConverter$UserApplicationMain.coverage" NAME="UserApplicationMain Coverage Results" MODIFIED="1730904757338" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/DectopApp" />
   </component>
 </project>

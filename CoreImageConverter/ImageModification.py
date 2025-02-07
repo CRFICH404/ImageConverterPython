@@ -6,48 +6,6 @@ import math
 import time
 import threading
 
-
-def change_image(image_name: str, command: str, **kwargs):
-    if kwargs is None:
-        change_values = []
-
-    match command:
-        case "crop_image":
-            return crop_image(open_image(image_name), [kwargs[''], kwargs['']], [kwargs[''], kwargs['']])
-        case "rotate_image_right_90_deg":
-            return rotate_image_right_90_deg(open_image(image_name))
-        case "flip_image":
-            return flip_image(open_image(image_name))
-        case "solarize_image":
-            if len(**kwargs) < 1:
-                return solarize_image(open_image(image_name))
-            elif len(kwargs) == 1:
-                return solarize_image(open_image(image_name), kwargs[''])
-            else:
-                return solarize_image(open_image(image_name), kwargs[''], kwargs[''])
-        case "convert_to_negative":
-            return convert_to_negative(open_image(image_name))
-        case "change_brightness":
-            if kwargs is None:
-                return change_brightness(open_image(image_name), 0)
-            else:
-                return change_brightness(open_image(image_name), kwargs[''])
-        case "change_contrast":
-            if len(**kwargs) < 1:
-                return change_contrast(open_image(image_name), 1)
-            else:
-                return change_contrast(open_image(image_name), kwargs[''])
-        case "resize_image":
-            if kwargs['height'] and kwargs['width']:
-                return resize_image(open_image(image_name), kwargs['height'], kwargs['width'])
-            else:
-                return open_image(image_name)
-        case "convert_rgb_to_greyscale":
-            return convert_rgb_to_greyscale(open_image(image_name))
-        case _:
-            print("No such command")
-    return None
-
 def open_image (image_name: str) -> np.ndarray:
 
     path_parts = os.path.abspath(os.getcwd()).split('\\')
@@ -226,35 +184,5 @@ def set_nearby_pixels_greyscale(source_image: np.ndarray, result_image: np.ndarr
 
             result_image[curr_y, new_x, channel] = mix_top_and_bot
 
-def edge_highlight (image: np.ndarray, highlight_thickness: int, highlight_color: (int, int, int)) -> np.ndarray:
-    ...
 
-if __name__ == "__main__":
-    img_name = 'honkibooty-Rebecca-(Edgerunners)-Cyberpunk-Edgerunners-8756249.jpg'
-    img_name_2 = 'tiger-animals-cat-predator-preview.jpg'
-    path3 = 'GO48R.png'
-    image_np = open_image(img_name)
-    image_np_2 = open_image(img_name_2)
-    Image.fromarray(resize_image(image_np, 1300, 600)).show()
-    #Image.fromarray(change_contrast(image_np_2)).show()
-    #image_np_3 = open_image(path3)
-    #Image.fromarray(image_np).show()
-    #Image.fromarray(change_contrast(image_np)).show()
-    #Image.fromarray(solarize_image(image_np, 70)).show()
-    #Image.fromarray(solarize_image(image_np, 130)).show()
-    #Image.fromarray(solarize_image(image_np, 160)).show()
-    #Image.fromarray(solarize_image(image_np, 190)).show()
-    #Image.fromarray(solarize_image(image_np, 240)).show()
-    #Image.fromarray(solarize_image(image_np, 100)).show()
-    #Image.fromarray(solarize_image(image_np, 130)).show()
-    #Image.fromarray(solarize_image(image_np_2, 70)).show()
-    #Image.fromarray(solarize_image(image_np_2, 100)).show()
-    #Image.fromarray(solarize_image(image_np_2, 130)).show()
-    #Image.fromarray(solarize_image(image_np_2, 160)).show()
-    #Image.fromarray(solarize_image(image_np_2, 190)).show()
-    #Image.fromarray(solarize_image(image_np_2, 220)).show()
-    #Image.fromarray(solarize_image(image_np_2, 250)).show()
-    #Image.fromarray(change_brightness(image_np, -30)).show()
-    #Image.fromarray(change_brightness(image_np, 0)).show()
-    #Image.fromarray(change_brightness(image_np, 30)).show()
-    #Image.fromarray(change_brightness(image_np_2, 30)).show()
+
